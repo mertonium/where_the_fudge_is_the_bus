@@ -33,6 +33,10 @@ $(function() {
   // set the route as the pathname, but loose the leading slash
   var route = window.location.pathname.replace('/', '');
 
+  if(!util.inVhost()) {
+    route = route.replace('msp_transit/_design/app/_rewrite/','');
+  }
+  
   util.routeViews( route );
   
   $('a').live('click', function( event ) {

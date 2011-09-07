@@ -102,12 +102,22 @@ var util = function() {
     }
   }
   
+  // vhosts are when you mask couchapps behind a pretty URL
+  function inVhost() {
+    var vhost = false;
+    if ( document.location.pathname.indexOf( "_design" ) === -1 ) {
+      vhost = true;
+    }
+    return vhost;
+  }
+  
   return {
     capitalize: capitalize,
     isAdminParty: isAdminParty,
     cachedRequest: cachedRequest,
     render: render,
     getBaseURL: getBaseURL,
-    routeViews: routeViews
+    routeViews: routeViews,
+    inVhost: inVhost
   };
 }();

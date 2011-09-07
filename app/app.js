@@ -8,8 +8,8 @@ ddoc =
     [ {from:"/", to:'index.html'}
     , {from:"/api", to:'../../'}    
     , {from:"/api/*", to:'../../*'}
-    , {from:"/script", to:'/script'}
-    , {from:"/script/*", to:'/script/*'}
+    , {from:"/script", to:'../script'}
+    , {from:"/script/*", to:'../script/*'}
     , {from:"/style", to:'/style'}
     , {from:"/style/*", to:'/style/*'}
     , {from:"/images", to:'/images'}
