@@ -9,5 +9,6 @@
   "dependencies": {
       "jsdom" : ">=0.2.4"
   },
-  "engines" : { "node" : ">=0.4.11" }
+  "engines" : { "node" : ">=0.4.11" },
+  "main":"server.js"
 }
