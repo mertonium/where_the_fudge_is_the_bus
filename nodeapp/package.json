@@ -1,0 +1,13 @@
+{
+  "name":"nextrip",
+  "version":"0.0.1",
+  "description":"Get realtime bus information for the Twin Cities. Uses NexTrip from Metro Transit.",
+  "keywords":["transit","twin cities","real","time","bus"],
+  "homepage":"http://mertonium.com",
+  "author":"John Mertens <john@mertonium.com> (http://mertonium.com)",
+  "repository":{ "type" : "git", "url" : "http://github.com/mertonium/nextrip-node.git" },
+  "dependencies": {
+      "jsdom" : ">=0.2.4"
+  },
+  "engines" : { "node" : ">=0.4.11" }
+}
