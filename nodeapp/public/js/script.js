@@ -2,7 +2,8 @@
 
 
 */
-var WTFIMB = {};
+var WTFIMB = {
+};
 
 (function(m) {
   m.app = function() {
@@ -35,20 +36,20 @@ var WTFIMB = {};
         findStops(cur_pos, function(stops) {
           var i = 0, s = null;
           var $stopBlock;
-        
+
           console.log(stops);
           // Loop through the stops and figure out what the next bus is
           for(; i < stops.length; i+=1) {
             s = stops[i].value;
-          
-            $stopBlock = $('<li id="stop_'+s.stop_id+'" class="stop-block"><span class="stop-name">'+s.stop_name + ' (' + s.stop_desc +')</span><ul></ul></li>');
-          
+
+
             // Get the realtime info for each stop
             $.get('/nextrip/'+s.stop_id,{}, function(data) {
+              $stopBlock = $('<li id="stop_'+s.stop_id+'" class="stop-block"><span class="stop-name">'+s.stop_name + ' (' + s.stop_desc +')</span><ul></ul></li>');
               var j = 0, connector = '', route;
               var routes = data.routes;
               console.log(data);
-            
+
               // Loop through each arrival, building the 
               for(; j < routes.length; j += 1) {
                 route = routes[j];
