@@ -35,22 +35,24 @@ var WTFIMB = {
 
         // Find all the near-by stops
         findStops(cur_pos, function(stops) {
-          var i = 0, s = null;
+          var i = 0;
           var $stopBlock;
           var totalStops = stops.length;
           var finishedCount = 0;
 
-          console.log(stops);
-          // Loop through the stops and figure out what the next bus is
-          for(; i < totalStops; i+=1) {
+          //console.log(stops);
 
-            s = stops[i].value;
+          // Loop through the stops and figure out what the next bus is
+          $.each(stops, function(idx, stop) {
+
+            var s = stop.value;
+
             // Get the realtime info for each stop
             $.get('/nextrip/'+s.stop_id,{}, function(data) {
               $stopBlock = $('<li id="stop_'+s.stop_id+'" class="stop-block"><span class="stop-name">'+s.stop_name + ' (' + s.stop_desc +')</span><ul></ul></li>');
               var j = 0, connector = '', route;
               var routes = data.routes;
-              console.log(data);
+              //console.log(data);
 
               // Loop through each arrival, building the
               for(; j < routes.length; j += 1) {
@@ -63,12 +65,12 @@ var WTFIMB = {
               $('#the_routes').append($stopBlock);
 
               finishedCount += 1;
-              
+
               if(finishedCount == (totalStops-1)) {
                 $('#the_loader').hide();
               }
             });
-          }
+          });
         });
       });
     };
@@ -85,7 +87,6 @@ var WTFIMB = {
     };
 
     var findStops = function(pos, callback) {
-      console.log('in findStops');
       var bbox = getBbox(pos);
       var opts = {
         url: couch.host+'/'+couch.db+'/_design/geo/_spatial/full?bbox='+bbox,
@@ -98,7 +99,7 @@ var WTFIMB = {
               stop.distance = quickDist(pos.coords.latitude, pos.coords.longitude, stop.geometry.coordinates[1], stop.geometry.coordinates[0]);
           });
 
-          // Sort the murals from closest to farthest
+          // Sort the stops from closest to farthest
           _stops.sort(function(a, b) { return  a.distance - b.distance; });
 
           // Only keep the closest 5
