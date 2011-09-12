@@ -22,7 +22,7 @@ app.configure('production', function(){
 
 
 app.get('/', function(req, res){
-  res.send('Hello World');
+  res.redirect('/index.html', 301);
 });
 
 app.get('/nextrip/:stopid', function(req, res){
