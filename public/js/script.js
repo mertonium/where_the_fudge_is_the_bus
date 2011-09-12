@@ -15,6 +15,7 @@ var WTFIMB = {
     };
 
     var init = function() {
+      $('#the_loader').show();
       loadRoutes();
     };
 
@@ -36,10 +37,12 @@ var WTFIMB = {
         findStops(cur_pos, function(stops) {
           var i = 0, s = null;
           var $stopBlock;
+          var totalStops = stops.length;
+          var finishedCount = 0;
 
           console.log(stops);
           // Loop through the stops and figure out what the next bus is
-          for(; i < stops.length; i+=1) {
+          for(; i < totalStops; i+=1) {
 
             s = stops[i].value;
             // Get the realtime info for each stop
@@ -58,6 +61,12 @@ var WTFIMB = {
 
               // Add all our results to the main block
               $('#the_routes').append($stopBlock);
+
+              finishedCount += 1;
+              
+              if(finishedCount == (totalStops-1)) {
+                $('#the_loader').hide();
+              }
             });
           }
         });
