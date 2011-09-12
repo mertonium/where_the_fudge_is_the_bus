@@ -1,4 +1,4 @@
-var nextrip = require('../../nextrip-node/lib/nextrip.js');
+var nextrip = require('nextrip');
 var express = require('express');
 
 var app = express.createServer();

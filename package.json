@@ -7,7 +7,8 @@
   "author":"John Mertens <john@mertonium.com> (http://mertonium.com)",
   "repository":{ "type" : "git", "url" : "http://github.com/mertonium/msp_transit.git" },
   "dependencies": {
-    "express":"2.3.4"
+    "express":"2.3.4",
+    "nextrip":"0.0.1"
   },
   "engines" : { "node" : ">=0.4.11" },
   "main":"server.js"
