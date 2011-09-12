@@ -1,4 +1,4 @@
-/* Author: John Mertens @mertonium
+/* Author: John Mertens (http://mertonium.com)
 
 
 */
@@ -58,7 +58,7 @@ var WTFIMB = {
               for(; j < routes.length; j += 1) {
                 route = routes[j];
                 connector = (route.next_arrival.toLowerCase().indexOf('min') != -1) ? 'in' : 'at';
-                $stopBlock.find('ul').append('<li class="route"><div class="response">Dude, the next '+route.route_short_name+' is '+connector+' '+route.next_arrival+'</div><div class="details">'+route.route_long_name+'</div></li>');
+                $stopBlock.find('ul').append('<li class="route"><h1 class="response">A: Dude, the next '+route.route_short_name+' is '+connector+' '+route.next_arrival+'</h1><div class="details">'+route.route_long_name+'</div></li>');
               }
 
               // Add all our results to the main block

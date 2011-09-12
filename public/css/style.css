@@ -10,14 +10,6 @@
  * - praegnanz.de/weblog/htmlcssjs-kickstart
  */
 
- /*
-   Custom styles
- */
- #the_loader img {
-   width: 50px;
-   height: 50px;
- }
-
 /**
  * html5doctor.com Reset Stylesheet (Eric Meyer's Reset Reloaded + HTML5 baseline)
  * v1.6.1 2010-09-17 | Authors: Eric Meyer & Richard Clark
@@ -217,9 +209,17 @@ textarea.contenteditable {-webkit-appearance: none;}
 
 
 /* Primary Styles for mobile
-   Author:
+   Author: John Mertens (http://mertonium.com)
 */
-
+#the_loader img {
+ width: 50px;
+ height: 50px;
+}
+ 
+h1 {
+  font-size: 3em;
+  text-transform: uppercase;
+}
 
 /*
  * Media queries for responsive design https://github.com/shichuan/mobile-html5-boilerplate/wiki/The-Style
