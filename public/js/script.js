@@ -10,7 +10,7 @@ var WTFIMB = {
     var files_house = { coords: { latitude: 44.98680, longitude: -93.25217 }};
     var cur_pos = null;
     var couch = {
-      host: 'http://localhost:5984',
+      host: 'http://x.iriscouch.com',
       db:   'msp_stops'
     };
 
