@@ -10,6 +10,6 @@
     "express":"2.3.4",
     "nextrip":"0.0.1"
   },
-  "engines" : { "node" : ">=0.4.11" },
+  "engines" : { "node" : ">=0.4.7" },
   "main":"server.js"
 }
