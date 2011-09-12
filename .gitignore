@@ -1,7 +1,2 @@
 node_modules/*
-stop_times.txt
-shapes.txt
-stimes/*
-formdata
-resp.html
-sample_output.html
+.DS_Store
