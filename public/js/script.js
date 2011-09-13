@@ -52,7 +52,7 @@ var WTFIMB = {
             $.get('/nextrip/'+s.stop_id,{}, function(data) {
               $stopBlock = $('#the_routes');
 //              $stopBlock = $('<li id="stop_'+s.stop_id+'" class="stop-block"><span class="stop-name">'+s.stop_name + ' (' + s.stop_desc +')</span><ul></ul></li>');
-              var j = 0, connector = '', route;
+              var j = 0, connector = '', route, herro = '';
               var uniqueRoutes = [];
               var routes = data.routes;
               //console.log(data);
@@ -63,7 +63,8 @@ var WTFIMB = {
                 if(uniqueRoutes.indexOf(route.route_short_name) == -1) {
                   uniqueRoutes.push(route.route_short_name);
                   connector = (route.next_arrival.toLowerCase().indexOf('min') != -1) ? 'in' : 'at';
-                  $stopBlock.append('<li data-stop="'+s.stop_id+'" data-route="'+route.route_id+'"><div class="response">A: Dude, the next '+route.route_short_name+' is '+connector+' '+route.next_arrival+'</div><div class="details">If you\'re looking for the '+route.route_long_name+' and you\'re at the '+s.stop_name+' stop.</div></li>');
+                  if(Date.now() % 3 === 0) herro = salutations() +', ';
+                  $stopBlock.append('<li data-stop="'+s.stop_id+'" data-route="'+route.route_id+'"><div class="response">A: '+herro+'the next '+route.route_short_name+' is '+connector+' '+route.next_arrival+'</div><div class="details">If you\'re looking for the '+route.route_long_name+' and you\'re at the '+s.stop_name+' stop.</div></li>');
                 }
               }
 
@@ -142,6 +143,40 @@ var WTFIMB = {
                         Math.cos(lat1.toRad())*Math.cos(lat2.toRad()) *
                         Math.cos(lon2.toRad()-lon1.toRad())) * R;
       return d;
+    };
+    
+    var salutations = function() {
+      var vocab = [
+        'Broseph Stalin',
+        'Angelina Brolie',
+        'Brobi Wan Kenobi',
+        'Brometheus',
+        'Bro Chi Minh',
+        'Nabroleon Bronaparte',
+        'Evander Bro-lifield',
+        'Pete Brose',
+        'Bro Jackson',
+        'Vincent Van Bro',
+        'Bromer Simpson',
+        'Marco Brolo',
+        'Yoko-Brono',
+        'Mr. Brojangles',
+        'Bro Diddley',
+        'Brosie O’Donnell',
+        'Brohammed Ali',
+        'Bromeo',
+        'Bro J. Simpson',
+        'Brogi Berra',
+        'Edgar Allan Bro',
+        'Brohmygod',
+        'Brostradamus',
+        'Bro Biden',
+        'Brommander In Chief',
+        'Ayatollah Bromeini',
+        'Dan Maribro'
+      ];
+
+      return vocab[(Math.floor(Math.random() * ((vocab.length-1) + 1)))];
     };
 
     return {
