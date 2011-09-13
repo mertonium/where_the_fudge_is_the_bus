@@ -50,7 +50,8 @@ var WTFIMB = {
 
             // Get the realtime info for each stop
             $.get('/nextrip/'+s.stop_id,{}, function(data) {
-              $stopBlock = $('<li id="stop_'+s.stop_id+'" class="stop-block"><span class="stop-name">'+s.stop_name + ' (' + s.stop_desc +')</span><ul></ul></li>');
+              $stopBlock = $('#the_routes');
+//              $stopBlock = $('<li id="stop_'+s.stop_id+'" class="stop-block"><span class="stop-name">'+s.stop_name + ' (' + s.stop_desc +')</span><ul></ul></li>');
               var j = 0, connector = '', route;
               var uniqueRoutes = [];
               var routes = data.routes;
@@ -62,12 +63,12 @@ var WTFIMB = {
                 if(uniqueRoutes.indexOf(route.route_short_name) == -1) {
                   uniqueRoutes.push(route.route_short_name);
                   connector = (route.next_arrival.toLowerCase().indexOf('min') != -1) ? 'in' : 'at';
-                  $stopBlock.find('ul').append('<li class="route"><h1 class="response">A: Dude, the next '+route.route_short_name+' is '+connector+' '+route.next_arrival+'</h1><div class="details">'+route.route_long_name+'</div></li>');
+                  $stopBlock.append('<li data-stop="'+s.stop_id+'" data-route="'+route.route_id+'"><div class="response">A: Dude, the next '+route.route_short_name+' is '+connector+' '+route.next_arrival+'</div><div class="details">If you\'re looking for the '+route.route_long_name+' and you\'re at the '+s.stop_name+' stop.</div></li>');
                 }
               }
 
               // Add all our results to the main block
-              $('#the_routes').append($stopBlock);
+              //$('#the_routes').append($stopBlock);
 
               finishedCount += 1;
 
@@ -82,7 +83,7 @@ var WTFIMB = {
 
     var getPos = function(callback) {
       if(ENV == 'dev') callback(null,'testing...');
-      
+
       if(navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           function(pos) { callback(pos); },
