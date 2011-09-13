@@ -7,6 +7,7 @@ var WTFIMB = {
 
 (function(m) {
   m.app = function() {
+    var ENV = 'dev';
     var files_house = { coords: { latitude: 44.98680, longitude: -93.25217 }};
     var cur_pos = null;
     var couch = {
@@ -51,14 +52,18 @@ var WTFIMB = {
             $.get('/nextrip/'+s.stop_id,{}, function(data) {
               $stopBlock = $('<li id="stop_'+s.stop_id+'" class="stop-block"><span class="stop-name">'+s.stop_name + ' (' + s.stop_desc +')</span><ul></ul></li>');
               var j = 0, connector = '', route;
+              var uniqueRoutes = [];
               var routes = data.routes;
               //console.log(data);
 
               // Loop through each arrival, building the
               for(; j < routes.length; j += 1) {
                 route = routes[j];
-                connector = (route.next_arrival.toLowerCase().indexOf('min') != -1) ? 'in' : 'at';
-                $stopBlock.find('ul').append('<li class="route"><h1 class="response">A: Dude, the next '+route.route_short_name+' is '+connector+' '+route.next_arrival+'</h1><div class="details">'+route.route_long_name+'</div></li>');
+                if(uniqueRoutes.indexOf(route.route_short_name) == -1) {
+                  uniqueRoutes.push(route.route_short_name);
+                  connector = (route.next_arrival.toLowerCase().indexOf('min') != -1) ? 'in' : 'at';
+                  $stopBlock.find('ul').append('<li class="route"><h1 class="response">A: Dude, the next '+route.route_short_name+' is '+connector+' '+route.next_arrival+'</h1><div class="details">'+route.route_long_name+'</div></li>');
+                }
               }
 
               // Add all our results to the main block
@@ -76,6 +81,8 @@ var WTFIMB = {
     };
 
     var getPos = function(callback) {
+      if(ENV == 'dev') callback(null,'testing...');
+      
       if(navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           function(pos) { callback(pos); },
