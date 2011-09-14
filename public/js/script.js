@@ -7,7 +7,7 @@ var WTFIMB = {
 
 (function(m) {
   m.app = function() {
-    var ENV = 'dev';
+    var ENV = 'prod';
     var files_house = { coords: { latitude: 44.98680, longitude: -93.25217 }};
     var cur_pos = null;
     var couch = {
@@ -18,6 +18,7 @@ var WTFIMB = {
     var init = function() {
       $('#the_loader').show();
       loadRoutes();
+      bindHandlers();
     };
 
     var loadRoutes = function() {
@@ -51,7 +52,6 @@ var WTFIMB = {
             // Get the realtime info for each stop
             $.get('/nextrip/'+s.stop_id,{}, function(data) {
               $stopBlock = $('#the_routes');
-//              $stopBlock = $('<li id="stop_'+s.stop_id+'" class="stop-block"><span class="stop-name">'+s.stop_name + ' (' + s.stop_desc +')</span><ul></ul></li>');
               var j = 0, connector = '', route, herro = '';
               var uniqueRoutes = [];
               var routes = data.routes;
@@ -63,18 +63,16 @@ var WTFIMB = {
                 if(uniqueRoutes.indexOf(route.route_short_name) == -1) {
                   uniqueRoutes.push(route.route_short_name);
                   connector = (route.next_arrival.toLowerCase().indexOf('min') != -1) ? 'in' : 'at';
-                  if(Date.now() % 3 === 0) herro = salutations() +', ';
-                  $stopBlock.append('<li data-stop="'+s.stop_id+'" data-route="'+route.route_id+'"><div class="response">A: '+herro+'the next '+route.route_short_name+' is '+connector+' '+route.next_arrival+'</div><div class="details">If you\'re looking for the '+route.route_long_name+' and you\'re at the '+s.stop_name+' stop.</div></li>');
+                  if(Date.now() % 4 === 0) herro = salutations() +', ';
+                  $stopBlock.append('<li data-stop="'+s.stop_id+'" data-route="'+route.route_short_name+'"><div class="response">A: '+herro+'the next '+route.route_short_name+' is '+connector+' '+route.next_arrival+'</div><div class="details">(If you\'re looking for the '+route.route_long_name+' and you\'re at the '+s.stop_name+' stop.)</div></li>');
                 }
               }
-
-              // Add all our results to the main block
-              //$('#the_routes').append($stopBlock);
 
               finishedCount += 1;
 
               if(finishedCount == (totalStops-1)) {
                 $('#the_loader').hide();
+                $('#the_routes').children().first().addClass('cur-route');
               }
             });
           });
@@ -102,7 +100,7 @@ var WTFIMB = {
         crossDomain: true,
         dataType: 'jsonp',
         success: function(_stops) {
-          console.log(_stops);
+          //console.log(_stops);
           _stops = _stops.rows;
           $.each(_stops, function(idx, stop) {
               stop.distance = quickDist(pos.coords.latitude, pos.coords.longitude, stop.geometry.coordinates[1], stop.geometry.coordinates[0]);
@@ -121,6 +119,32 @@ var WTFIMB = {
 
       $.ajax(opts, function(data) {
         callback(data);
+      });
+    };
+
+    var bindHandlers = function() {
+      $('.button').bind('click', function(ev) {
+        var $slider = $('#the_routes');
+        var direction = ($(this).attr('id') == 'next') ? 'next' : 'prev';
+        var $currentWork = $slider.find('.cur-route');
+        var curPos = parseInt($slider.css('marginLeft'), 10);
+        var delta = $('.cur-route').outerWidth(true);
+
+        var possible = (direction == 'next') ? $currentWork.next('li').length : $currentWork.prev('li').length;
+        var newPos = (direction == 'next') ? (curPos - delta) : (curPos + delta);
+
+        if(possible) {
+          if(direction === 'next') {
+            $currentWork.removeClass('cur-route').next('li').addClass('cur-route');
+          } else {
+            $currentWork.removeClass('cur-route').prev('li').addClass('cur-route');
+          }
+          $slider.animate({'marginLeft': newPos +'px'} , {
+            duration: 1500,
+            easing: 'easeOutBack',
+            complete: function() {    }
+          });
+        }
       });
     };
 
@@ -144,7 +168,7 @@ var WTFIMB = {
                         Math.cos(lon2.toRad()-lon1.toRad())) * R;
       return d;
     };
-    
+
     var salutations = function() {
       var vocab = [
         'Broseph Stalin',

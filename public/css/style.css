@@ -211,29 +211,73 @@ textarea.contenteditable {-webkit-appearance: none;}
 /* Primary Styles for mobile
    Author: John Mertens (http://mertonium.com)
 */
+body {
+  background: #000000;
+  color: #FFFFFF;
+}
+
+#container {
+  width: 320px;
+  overflow: hidden;
+}
+
 #the_loader img {
  width: 50px;
  height: 50px;
 }
  
 h1, .response {
-  font-size: 3em;
+  font-size: 2.6em;
   text-transform: uppercase;
   font-weight: bold;
+}
+
+h1 {
+  border-bottom: 1px groove;
 }
 
 .details {
   font-size: 1em;
   font-style: italic;
+  color: #dddddd;
 }
 #the_routes {
   list-style: none;
   padding: 0;
   margin: 0;
+  width: 5000px;
 }
 
 #the_routes li {
   margin-bottom: 1.5em;
+  float: left;
+  width: 320px;
+}
+
+#controls {
+  clear: both;
+}
+
+.button {
+  border: 2px solid #FFFFFF;
+  padding: 10px;
+  width: 100px;
+  display: block;
+  text-align: center;
+}
+
+a.button {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: bold;
+  border-radius: 5px;
+  float: left;
+  margin-left: 17px;
+}
+
+#debug_info {
+  clear:both;
 }
 
 /*
