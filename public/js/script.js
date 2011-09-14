@@ -43,39 +43,44 @@ var WTFIMB = {
           var finishedCount = 0;
 
           //console.log(stops);
+          if(totalStops === 0) {
+            $('#the_loader').html('<div class="out-of-range">Sorry, dude. We can\'t find any bus stops near you.</div>');
+            $('#controls').hide();
+          } else {
+            // Loop through the stops and figure out what the next bus is
+            $.each(stops, function(idx, stop) {
 
-          // Loop through the stops and figure out what the next bus is
-          $.each(stops, function(idx, stop) {
+              var s = stop.value;
 
-            var s = stop.value;
+              // Get the realtime info for each stop
+              $.get('/nextrip/'+s.stop_id,{}, function(data) {
+                $stopBlock = $('#the_routes');
+                var j = 0, connector = '', route, herro = '';
+                var uniqueRoutes = [];
+                var routes = data.routes;
+                //console.log(data);
 
-            // Get the realtime info for each stop
-            $.get('/nextrip/'+s.stop_id,{}, function(data) {
-              $stopBlock = $('#the_routes');
-              var j = 0, connector = '', route, herro = '';
-              var uniqueRoutes = [];
-              var routes = data.routes;
-              //console.log(data);
-
-              // Loop through each arrival, building the
-              for(; j < routes.length; j += 1) {
-                route = routes[j];
-                if(uniqueRoutes.indexOf(route.route_short_name) == -1) {
-                  uniqueRoutes.push(route.route_short_name);
-                  connector = (route.next_arrival.toLowerCase().indexOf('min') != -1) ? 'in' : 'at';
-                  if(Date.now() % 4 === 0) herro = salutations() +', ';
-                  $stopBlock.append('<li data-stop="'+s.stop_id+'" data-route="'+route.route_short_name+'"><div class="response">A: '+herro+'the next '+route.route_short_name+' is '+connector+' '+route.next_arrival+'</div><div class="details">(If you\'re looking for the '+route.route_long_name+' and you\'re at the '+s.stop_name+' stop.)</div></li>');
+                // Loop through each arrival, building the
+                for(; j < routes.length; j += 1) {
+                  route = routes[j];
+                  if(uniqueRoutes.indexOf(route.route_short_name) == -1) {
+                    uniqueRoutes.push(route.route_short_name);
+                    connector = (route.next_arrival.toLowerCase().indexOf('min') != -1) ? 'in' : 'at';
+                    if(Date.now() % 4 === 0) herro = salutations() +', ';
+                    $stopBlock.append('<li data-stop="'+s.stop_id+'" data-route="'+route.route_short_name+'"><div class="response">'+herro+'the next '+route.route_short_name+' is '+connector+' '+route.next_arrival+'</div><div class="details">(If you\'re looking for the '+route.route_long_name+' and you\'re at the '+s.stop_name+' stop.)</div></li>');
+                  }
                 }
-              }
 
-              finishedCount += 1;
+                finishedCount += 1;
 
-              if(finishedCount == (totalStops-1)) {
-                $('#the_loader').hide();
-                $('#the_routes').children().first().addClass('cur-route');
-              }
+                if(finishedCount == (totalStops-1)) {
+                  $('#the_loader').hide();
+                  $('#controls').show();
+                  $('#the_routes').children().first().addClass('cur-route');
+                }
+              });
             });
-          });
+          }
         });
       });
     };
