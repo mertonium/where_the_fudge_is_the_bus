@@ -7,7 +7,7 @@ var WTFIMB = {
 
 (function(m) {
   m.app = function() {
-    var ENV = 'dev';
+    var ENV = 'prod';
     var files_house = { coords: { latitude: 44.98680, longitude: -93.25217 }};
     var cur_pos = null;
     var couch = {
@@ -47,6 +47,7 @@ var WTFIMB = {
             $('#the_loader').html('<div class="out-of-range">Sorry, dude. We can\'t find any bus stops near you.</div>');
             $('#controls').hide();
           } else {
+            $('#the_loader').hide();
             // Loop through the stops and figure out what the next bus is
             $.each(stops, function(idx, stop) {
 
@@ -74,7 +75,6 @@ var WTFIMB = {
                 finishedCount += 1;
 
                 if(finishedCount == (totalStops-1)) {
-                  $('#the_loader').hide();
                   $('#controls').show();
                   $('#the_routes').children().first().addClass('cur-route');
                 }
@@ -86,7 +86,10 @@ var WTFIMB = {
     };
 
     var getPos = function(callback) {
-      if(ENV == 'dev') callback(null,'testing...');
+      if(ENV == 'dev') { 
+        callback(null,'testing...');
+        return;
+      }
 
       if(navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
@@ -127,7 +130,6 @@ var WTFIMB = {
 
     var bindHandlers = function() {
       $('#the_routes').bind('swipeleft swiperight', function(ev) {
-        console.log(ev);
         var $slider = $(this);
         var direction = (ev.type == 'swipeleft') ? 'next' : 'prev';
         var $currentWork = $slider.find('.cur-route');
@@ -205,9 +207,9 @@ var WTFIMB = {
           'Brostradamus','Bro Biden','Brommander In Chief','Ayatollah Bromeini'
         ]
       };
-console.log(vocab);
-console.log(type);
-console.log(vocab[type]);
+// console.log(vocab);
+// console.log(type);
+// console.log(vocab[type]);
       return vocab[type][(Math.floor(Math.random() * ((vocab[type].length-1) + 1)))];
     };
 
