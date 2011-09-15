@@ -7,7 +7,7 @@ var WTFIMB = {
 
 (function(m) {
   m.app = function() {
-    var ENV = 'prod';
+    var ENV = 'dev';
     var files_house = { coords: { latitude: 44.98680, longitude: -93.25217 }};
     var cur_pos = null;
     var couch = {
@@ -66,7 +66,7 @@ var WTFIMB = {
                   if(uniqueRoutes.indexOf(route.route_short_name) == -1) {
                     uniqueRoutes.push(route.route_short_name);
                     connector = (route.next_arrival.toLowerCase().indexOf('min') != -1) ? 'in' : 'at';
-                    if(Date.now() % 4 === 0) herro = salutations() +', ';
+                    if(Date.now() % 4 === 0) herro = humanTalk('bro') +', ';
                     $stopBlock.append('<li data-stop="'+s.stop_id+'" data-route="'+route.route_short_name+'"><div class="response">'+herro+'the next '+route.route_short_name+' is '+connector+' '+route.next_arrival+'</div><div class="details">(If you\'re looking for the '+route.route_long_name+' and you\'re at the '+s.stop_name+' stop.)</div></li>');
                   }
                 }
@@ -122,15 +122,14 @@ var WTFIMB = {
         }
       };
 
-      $.ajax(opts, function(data) {
-        callback(data);
-      });
+      $.ajax(opts);
     };
 
     var bindHandlers = function() {
-      $('.button').bind('click', function(ev) {
-        var $slider = $('#the_routes');
-        var direction = ($(this).attr('id') == 'next') ? 'next' : 'prev';
+      $('#the_routes').bind('swipeleft swiperight', function(ev) {
+        console.log(ev);
+        var $slider = $(this);
+        var direction = (ev.type == 'swipeleft') ? 'next' : 'prev';
         var $currentWork = $slider.find('.cur-route');
         var curPos = parseInt($slider.css('marginLeft'), 10);
         var delta = $('.cur-route').outerWidth(true);
@@ -151,6 +150,29 @@ var WTFIMB = {
           });
         }
       });
+      // $('.button').bind('click', function(ev) {
+      //         var $slider = $('#the_routes');
+      //         var direction = ($(this).attr('id') == 'next') ? 'next' : 'prev';
+      //         var $currentWork = $slider.find('.cur-route');
+      //         var curPos = parseInt($slider.css('marginLeft'), 10);
+      //         var delta = $('.cur-route').outerWidth(true);
+      // 
+      //         var possible = (direction == 'next') ? $currentWork.next('li').length : $currentWork.prev('li').length;
+      //         var newPos = (direction == 'next') ? (curPos - delta) : (curPos + delta);
+      // 
+      //         if(possible) {
+      //           if(direction === 'next') {
+      //             $currentWork.removeClass('cur-route').next('li').addClass('cur-route');
+      //           } else {
+      //             $currentWork.removeClass('cur-route').prev('li').addClass('cur-route');
+      //           }
+      //           $slider.animate({'marginLeft': newPos +'px'} , {
+      //             duration: 1500,
+      //             easing: 'easeOutBack',
+      //             complete: function() {    }
+      //           });
+      //         }
+      //       });
     };
 
     var getBbox = function(pos) {
@@ -174,38 +196,19 @@ var WTFIMB = {
       return d;
     };
 
-    var salutations = function() {
-      var vocab = [
-        'Broseph Stalin',
-        'Angelina Brolie',
-        'Brobi Wan Kenobi',
-        'Brometheus',
-        'Bro Chi Minh',
-        'Nabroleon Bronaparte',
-        'Evander Bro-lifield',
-        'Pete Brose',
-        'Bro Jackson',
-        'Vincent Van Bro',
-        'Bromer Simpson',
-        'Marco Brolo',
-        'Yoko-Brono',
-        'Mr. Brojangles',
-        'Bro Diddley',
-        'Brosie O’Donnell',
-        'Brohammed Ali',
-        'Bromeo',
-        'Bro J. Simpson',
-        'Brogi Berra',
-        'Edgar Allan Bro',
-        'Brohmygod',
-        'Brostradamus',
-        'Bro Biden',
-        'Brommander In Chief',
-        'Ayatollah Bromeini',
-        'Dan Maribro'
-      ];
-
-      return vocab[(Math.floor(Math.random() * ((vocab.length-1) + 1)))];
+    var humanTalk = function(type) {
+      var vocab = {
+        bro : ['Broseph Stalin','Angelina Brolie','Brobi Wan Kenobi','Brometheus','Bro Chi Minh',
+          'Nabroleon Bronaparte','Evander Bro-lifield','Pete Brose','Bro Jackson','Vincent Van Bro',
+          'Bromer Simpson','Marco Brolo','Yoko-Brono','Mr. Brojangles','Bro Diddley','Brosie O’Donnell',
+          'Brohammed Ali','Bromeo','Bro J. Simpson','Brogi Berra','Edgar Allan Bro','Brohmygod',
+          'Brostradamus','Bro Biden','Brommander In Chief','Ayatollah Bromeini'
+        ]
+      };
+console.log(vocab);
+console.log(type);
+console.log(vocab[type]);
+      return vocab[type][(Math.floor(Math.random() * ((vocab[type].length-1) + 1)))];
     };
 
     return {
