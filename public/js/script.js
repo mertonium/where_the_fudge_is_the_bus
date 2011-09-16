@@ -28,7 +28,7 @@ var WTFIMB = {
           console.error(error);
           cur_pos = files_house;
         } else {
-          console.log(pos);
+          //console.log(pos);
           cur_pos = pos;
         }
 
@@ -56,19 +56,37 @@ var WTFIMB = {
               // Get the realtime info for each stop
               $.get('/nextrip/'+s.stop_id,{}, function(data) {
                 $stopBlock = $('#the_routes');
-                var j = 0, connector = '', route, herro = '';
-                var uniqueRoutes = [];
+                var j = 0,
+                    connector = '',
+                    advice = '',
+                    realtime,
+                    route,
+                    minutesFromNow,
+                    currentTime,
+                    uniqueRoutes = [];
+
                 var routes = data.routes;
                 //console.log(data);
 
                 // Loop through each arrival, building the
                 for(; j < routes.length; j += 1) {
+                  currentTime = data.current_time;
                   route = routes[j];
                   if(uniqueRoutes.indexOf(route.route_short_name) == -1) {
                     uniqueRoutes.push(route.route_short_name);
-                    connector = (route.next_arrival.toLowerCase().indexOf('min') != -1) ? 'in' : 'at';
-                    if(Date.now() % 4 === 0) herro = humanTalk('bro') +', ';
-                    $stopBlock.append('<li data-stop="'+s.stop_id+'" data-route="'+route.route_short_name+'"><div class="response">'+herro+'the next '+route.route_short_name+' is '+connector+' '+route.next_arrival+'</div><div class="details">(If you\'re looking for the '+route.route_long_name+' and you\'re at the '+s.stop_name+' stop.)</div></li>');
+                    realtime = (route.next_arrival.toLowerCase().indexOf('min') != -1 || route.next_arrival.toLowerCase().indexOf('due') != -1);
+                    connector = (realtime) ? 'in' : 'at';
+
+                    // Figure out how many minutes away the next bus is
+                    minutesFromNow = (realtime) ? parseInt(route.next_arrival, 10) : calcTimeDifference(route.next_arrival, currentTime);
+                    //console.log(minutesFromNow);
+
+                    if(minutesFromNow > 20) {
+                      advice = humanTalk('fuckit');
+                    } else if(minutesFromNow < 5) {
+                      advice = humanTalk('relax');
+                    }
+                    $stopBlock.append('<li data-stop="'+s.stop_id+'" data-route="'+route.route_short_name+'"><div class="response">'+advice+', the next '+route.route_short_name+' is '+connector+' '+route.next_arrival+'</div><div class="details">(If you\'re looking for the '+route.route_long_name+' and you\'re at the '+s.stop_name+' stop.)</div></li>');
                   }
                 }
 
@@ -86,7 +104,7 @@ var WTFIMB = {
     };
 
     var getPos = function(callback) {
-      if(ENV == 'dev') { 
+      if(ENV == 'dev') {
         callback(null,'testing...');
         return;
       }
@@ -146,35 +164,12 @@ var WTFIMB = {
             $currentWork.removeClass('cur-route').prev('li').addClass('cur-route');
           }
           $slider.animate({'marginLeft': newPos +'px'} , {
-            duration: 1500,
-            easing: 'easeOutBack',
+            duration: 1000,
+            easing: 'easeInCubic',
             complete: function() {    }
           });
         }
       });
-      // $('.button').bind('click', function(ev) {
-      //         var $slider = $('#the_routes');
-      //         var direction = ($(this).attr('id') == 'next') ? 'next' : 'prev';
-      //         var $currentWork = $slider.find('.cur-route');
-      //         var curPos = parseInt($slider.css('marginLeft'), 10);
-      //         var delta = $('.cur-route').outerWidth(true);
-      // 
-      //         var possible = (direction == 'next') ? $currentWork.next('li').length : $currentWork.prev('li').length;
-      //         var newPos = (direction == 'next') ? (curPos - delta) : (curPos + delta);
-      // 
-      //         if(possible) {
-      //           if(direction === 'next') {
-      //             $currentWork.removeClass('cur-route').next('li').addClass('cur-route');
-      //           } else {
-      //             $currentWork.removeClass('cur-route').prev('li').addClass('cur-route');
-      //           }
-      //           $slider.animate({'marginLeft': newPos +'px'} , {
-      //             duration: 1500,
-      //             easing: 'easeOutBack',
-      //             complete: function() {    }
-      //           });
-      //         }
-      //       });
     };
 
     var getBbox = function(pos) {
@@ -198,6 +193,19 @@ var WTFIMB = {
       return d;
     };
 
+    var calcTimeDifference = function(nextArrival, currentTime) {
+      currentTime = currentTime.split(' ');
+      var ampm = currentTime.pop();
+      var nowBits = currentTime.pop().split(':');
+      var scheduledTimeBits = nextArrival.split(':');
+
+      scheduledTimeBits = scheduledTimeBits.map(function(bit) { return parseInt(bit, 10); } );
+      nowBits = nowBits.map(function(bit) { return parseInt(bit, 10); } );
+
+      if(scheduledTimeBits[0] < nowBits[0]) scheduledTimeBits[0] += 12;
+      return (scheduledTimeBits[0]*60 + scheduledTimeBits[1]) - (nowBits[0]*60 + nowBits[1]);
+    }
+
     var humanTalk = function(type) {
       var vocab = {
         bro : ['Broseph Stalin','Angelina Brolie','Brobi Wan Kenobi','Brometheus','Bro Chi Minh',
@@ -205,11 +213,13 @@ var WTFIMB = {
           'Bromer Simpson','Marco Brolo','Yoko-Brono','Mr. Brojangles','Bro Diddley','Brosie O’Donnell',
           'Brohammed Ali','Bromeo','Bro J. Simpson','Brogi Berra','Edgar Allan Bro','Brohmygod',
           'Brostradamus','Bro Biden','Brommander In Chief','Ayatollah Bromeini'
+        ],
+        relax : ['relax','chill out','chillax','mellow out','simmer down','tranquilo'],
+        fuckit : ['might as well walk','hope you\'re not in a hurry',
+          'maybe you should take a cab','hope you brought a book'
         ]
       };
-// console.log(vocab);
-// console.log(type);
-// console.log(vocab[type]);
+
       return vocab[type][(Math.floor(Math.random() * ((vocab[type].length-1) + 1)))];
     };
 
@@ -218,20 +228,6 @@ var WTFIMB = {
     }
   }
 })(WTFIMB);
-
-/** Converts numeric degrees to radians */
-if (typeof(Number.prototype.toRad) === "undefined") {
-  Number.prototype.toRad = function() {
-    return this * Math.PI / 180;
-  }
-}
-
-/** Converts radians to numeric (signed) degrees */
-if (typeof(Number.prototype.toDeg) === "undefined") {
-  Number.prototype.toDeg = function() {
-    return this * 180 / Math.PI;
-  }
-}
 
 // Kick off the app
 $(function() { WTFIMB.app().init(); });
