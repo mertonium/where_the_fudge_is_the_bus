@@ -7,7 +7,7 @@ var WTFIMB = {
 
 (function(m) {
   m.app = function() {
-    var ENV = 'prod';
+    var ENV = 'dev';
     var files_house = { coords: { latitude: 44.98680, longitude: -93.25217 }};
     var cur_pos = null;
     var couch = {
@@ -85,6 +85,8 @@ var WTFIMB = {
                       advice = humanTalk('fuckit');
                     } else if(minutesFromNow < 5) {
                       advice = humanTalk('relax');
+                    } else {
+                      advice = humanTalk('meh');
                     }
                     $stopBlock.append('<li data-stop="'+s.stop_id+'" data-route="'+route.route_short_name+'"><div class="response">'+advice+', the next '+route.route_short_name+' is '+connector+' '+route.next_arrival+'</div><div class="details">(If you\'re looking for the '+route.route_long_name+' and you\'re at the '+s.stop_name+' stop.)</div></li>');
                   }
