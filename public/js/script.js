@@ -215,6 +215,7 @@ var WTFIMB = {
           'Brostradamus','Bro Biden','Brommander In Chief','Ayatollah Bromeini'
         ],
         relax : ['relax','chill out','chillax','mellow out','simmer down','tranquilo'],
+        meh : ['smoke \'em if you got \'em','you probably have time for a coffee'],
         fuckit : ['might as well walk','hope you\'re not in a hurry',
           'maybe you should take a cab','hope you brought a book'
         ]
