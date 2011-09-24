@@ -2,7 +2,7 @@ var nextrip = require('nextrip');
 var my511 = require('my511');
 var express = require('express');
 
-my511.token = process.env.MY511TOKEN || require('./config.js').AppConfig.my511Token;
+my511.token = MY511TOKEN || require('./config.js').AppConfig.my511Token;
 
 var app = express.createServer();
 
