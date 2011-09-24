@@ -2,8 +2,7 @@
 
 
 */
-var WTFIMB = {
-};
+var WTFIMB = {};
 
 (function(m) {
   m.app = function() {
@@ -11,8 +10,8 @@ var WTFIMB = {
     var files_house = { coords: { latitude: 44.98680, longitude: -93.25217 }};
     var cur_pos = null;
     var couch = {
-      host: 'http://localhost:5984',
-      db:   'sf_stops'
+      host: 'http://x.iriscouch.com:5984',
+      db:   'all_stops'
     };
 
     var init = function() {
@@ -53,11 +52,11 @@ var WTFIMB = {
 
               var s = stop.value;
               if(!s.api) s.api = 'nextrip';
-              
+
               var url = '/'+s.api;
               if(s.agency) url += '/'+s.agency;
               url += '/'+s.stop_id;
-              
+
               // Get the realtime info for each stop
               $.get(url,{}, function(data) {
                 $stopBlock = $('#the_routes');
