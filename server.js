@@ -1,4 +1,5 @@
 var nextrip = require('nextrip');
+var my511 = require('my511');
 var express = require('express');
 
 var app = express.createServer();
@@ -27,6 +28,14 @@ app.get('/', function(req, res){
 
 app.get('/nextrip/:stopid', function(req, res){
   nextrip.getNextTrip(req.params.stopid, {}, function(departures) {
+    res.send(departures);
+  });
+});
+
+app.get('/my511/:agency/:stopid', function(req, res){
+  var prefix = my511.getPrefix(req.params.agency);
+  var stop_id = prefix.toString() + req.params.stopid.toString();
+  my511.getNextTrip(stop_id, { token: '0fb3d8b5-e622-4151-9331-747618b52c20' }, function(departures) {
     res.send(departures);
   });
 });
