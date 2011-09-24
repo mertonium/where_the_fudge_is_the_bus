@@ -8,7 +8,8 @@
   "repository":{ "type" : "git", "url" : "http://github.com/mertonium/msp_transit.git" },
   "dependencies": {
     "express":"2.3.4",
-    "nextrip":"0.0.2"
+    "nextrip":"0.0.2",
+    "my511":"0.0.1"
   },
   "engines" : { "node" : ">=0.4.7" },
   "main":"server.js"
