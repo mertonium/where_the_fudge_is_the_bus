@@ -7,12 +7,12 @@ var WTFIMB = {
 
 (function(m) {
   m.app = function() {
-    var ENV = 'dev';
+    var ENV = 'prod';
     var files_house = { coords: { latitude: 44.98680, longitude: -93.25217 }};
     var cur_pos = null;
     var couch = {
-      host: 'http://x.iriscouch.com',
-      db:   'msp_stops'
+      host: 'http://localhost:5984',
+      db:   'sf_stops'
     };
 
     var init = function() {
@@ -52,9 +52,14 @@ var WTFIMB = {
             $.each(stops, function(idx, stop) {
 
               var s = stop.value;
-
+              if(!s.api) s.api = 'nextrip';
+              
+              var url = '/'+s.api;
+              if(s.agency) url += '/'+s.agency;
+              url += '/'+s.stop_id;
+              
               // Get the realtime info for each stop
-              $.get('/nextrip/'+s.stop_id,{}, function(data) {
+              $.get(url,{}, function(data) {
                 $stopBlock = $('#the_routes');
                 var j = 0,
                     connector = '',
@@ -63,10 +68,11 @@ var WTFIMB = {
                     route,
                     minutesFromNow,
                     currentTime,
-                    uniqueRoutes = [];
+                    uniqueRoutes = [],
+                    realtimeTest;
 
                 var routes = data.routes;
-                //console.log(data);
+                console.log(data);
 
                 // Loop through each arrival, building the
                 for(; j < routes.length; j += 1) {
@@ -74,8 +80,11 @@ var WTFIMB = {
                   route = routes[j];
                   if(uniqueRoutes.indexOf(route.route_short_name) == -1) {
                     uniqueRoutes.push(route.route_short_name);
-                    realtime = (route.next_arrival.toLowerCase().indexOf('min') != -1 || route.next_arrival.toLowerCase().indexOf('due') != -1);
+                    realtimeTest = route.next_arrival.toLowerCase();
+                    realtimeTest.replace('min','');
+                    realtime = (realtimeTest.indexOf('due') != -1 || realtimeTest.indexOf(':') == -1);
                     connector = (realtime) ? 'in' : 'at';
+                    if(realtime) route.next_arrival += 'min';
 
                     // Figure out how many minutes away the next bus is
                     minutesFromNow = (realtime) ? parseInt(route.next_arrival, 10) : calcTimeDifference(route.next_arrival, currentTime);
