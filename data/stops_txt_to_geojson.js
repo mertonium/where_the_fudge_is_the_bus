@@ -14,12 +14,13 @@ var bigFNObj = [];
 var jsonFile;
 
 var args = process.argv.slice(2);
-if(args.length == 3) {
+if(args.length == 4) {
   
   var config = { 
     stopfile : args[0],
     jsonfile : args[1],
-    api : args[2]
+    api : args[2],
+    agency: args[3]
   }
  
   csv()
@@ -31,6 +32,7 @@ if(args.length == 3) {
       };
       data.type = 'stop';
       data.api = config.api;
+      data.agency = config.agency;
       bigFNObj.push(data);
       return data;
   })
@@ -52,5 +54,5 @@ if(args.length == 3) {
   });
 } else {
   console.log("Proper usage:");
-  console.log('node stops_txt_to_geojson.js stops.txt stops.json source');
+  console.log('node stops_txt_to_geojson.js stops.txt stops.json apitouse agency');
 }
