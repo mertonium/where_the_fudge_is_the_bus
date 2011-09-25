@@ -157,29 +157,35 @@ var WTFIMB = {};
     };
 
     var bindHandlers = function() {
-      $('#the_routes').bind('swipeleft swiperight', function(ev) {
-        var $slider = $(this);
-        var direction = (ev.type == 'swipeleft') ? 'next' : 'prev';
-        var $currentWork = $slider.find('.cur-route');
-        var curPos = parseInt($slider.css('marginLeft'), 10);
-        var delta = $('.cur-route').outerWidth(true);
-
-        var possible = (direction == 'next') ? $currentWork.next('li').length : $currentWork.prev('li').length;
-        var newPos = (direction == 'next') ? (curPos - delta) : (curPos + delta);
-
-        if(possible) {
-          if(direction === 'next') {
-            $currentWork.removeClass('cur-route').next('li').addClass('cur-route');
-          } else {
-            $currentWork.removeClass('cur-route').prev('li').addClass('cur-route');
-          }
-          $slider.animate({'marginLeft': newPos +'px'} , {
-            duration: 1000,
-            easing: 'easeInCubic',
-            complete: function() {    }
-          });
-        }
+      $('#the_routes').bind('swipeleft swiperight', _swipehandler);
+      $('#the_routes').wipetouch({
+        wipeLeft: function(result) { $('#the_routes').trigger('swipeleft'); },
+        wipeRight: function(result) { $('#the_routes').trigger('swiperight'); }
       });
+    };
+    
+    var _swipehandler = function(ev) {
+      var $slider = $(this);
+      var direction = (ev.type == 'swipeleft') ? 'next' : 'prev';
+      var $currentWork = $slider.find('.cur-route');
+      var curPos = parseInt($slider.css('marginLeft'), 10);
+      var delta = $('.cur-route').outerWidth(true);
+
+      var possible = (direction == 'next') ? $currentWork.next('li').length : $currentWork.prev('li').length;
+      var newPos = (direction == 'next') ? (curPos - delta) : (curPos + delta);
+
+      if(possible) {
+        if(direction === 'next') {
+          $currentWork.removeClass('cur-route').next('li').addClass('cur-route');
+        } else {
+          $currentWork.removeClass('cur-route').prev('li').addClass('cur-route');
+        }
+        $slider.animate({'marginLeft': newPos +'px'} , {
+          duration: 1000,
+          easing: 'easeInCubic',
+          complete: function() {    }
+        });
+      }
     };
 
     var getBbox = function(pos) {
