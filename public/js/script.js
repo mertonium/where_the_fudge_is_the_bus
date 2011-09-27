@@ -122,7 +122,8 @@ var WTFIMB = {};
       if(navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           function(pos) { callback(pos); },
-          function(error) { callback(null, error); }
+          function(error) { callback(null, error); },
+          { enableHighAccuracy: true, maximumAge:600000, timeout: 7000 }
         );
       } else {
         console.log('Geolocation is not available.');
