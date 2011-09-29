@@ -235,17 +235,25 @@ var WTFIMB = {};
         meh : ['smoke \'em if you got \'em','you probably have time for a coffee'],
         fuckit : ['might as well walk','hope you\'re not in a hurry',
           'maybe you should take a cab','hope you brought a book'
-        ]
+        ],
+        fbomb : ['fudge','fart','fiddlesticks','freak','frig']
       };
 
       return vocab[type][(Math.floor(Math.random() * ((vocab[type].length-1) + 1)))];
     };
 
     return {
-      init: init
+      init: init,
+      humanTalk: humanTalk
     }
   }
 })(WTFIMB);
 
 // Kick off the app
-$(function() { WTFIMB.app().init(); });
+$(function() {
+  // make sure the f-word is correct
+  var fword = (location.host.indexOf('fuck') > -1) ? 'fuck' : WTFIMB.app().humanTalk('fbomb');
+  $('#fword').text(fword);
+  // Start app
+  WTFIMB.app().init(); 
+});
