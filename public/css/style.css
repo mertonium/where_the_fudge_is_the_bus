@@ -221,6 +221,7 @@ body {
   padding: 0;
   margin: 0;
   width: 15000px;
+  position: relative;
 }
 
 #debug_info {

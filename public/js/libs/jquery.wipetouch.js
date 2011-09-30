@@ -182,7 +182,7 @@
 				if (s > 5) s = 5;
 
 				var result = {speed: parseInt(s), x: ax, y: ay};
-
+				
 				if (ax >= config.moveX)
 				{
 					// check if it's allowed and call diagonal wipe events

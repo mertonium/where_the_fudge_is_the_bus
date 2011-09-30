@@ -13,7 +13,8 @@ var WTFIMB = {};
       host: 'http://x.iriscouch.com:5984',
       db:   'all_stops'
     };
-
+    var sliding = false;
+    
     var init = function() {
       $('#the_loader').show();
       loadRoutes();
@@ -166,6 +167,26 @@ var WTFIMB = {};
         wipeLeft: function(result) { $('#the_routes').trigger('swipeleft'); },
         wipeRight: function(result) { $('#the_routes').trigger('swiperight'); }
       });
+      /*
+      $('#the_routes').draggable({ 
+        axis: "x",
+        start: function(event, ui) {
+          startPos = ui.position;
+        },
+        drag: function(event, ui) {
+          console.log(sliding);
+          var dx = ui.position.left - startPos.left;
+          if(Math.abs(dx) > 60 && !sliding) {
+            sliding = true;
+            if(dx > 0) {
+              $('#the_routes').trigger('swipeleft');
+            } else {
+              $('#the_routes').trigger('swiperight');
+            }
+          }
+        }
+      });
+      */
     };
 
     var _swipehandler = function(ev) {
@@ -174,17 +195,21 @@ var WTFIMB = {};
       var direction = (ev.type == 'swipeleft') ? 'next' : 'prev';
       var $currentWork = $slider.find('.cur-route');
       var $currentPage = $pages.find('.cur-page');
-      var curPos = parseInt($slider.css('marginLeft'), 10);
-      var delta = $('.cur-route').outerWidth(true);
+      var curPos = parseInt($slider.css('left'), 10);
+      var delta = $('.cur-route').outerWidth(true) * -1;
+      var currentPageNumber = 0;
+      $slider.children().each(function(idx, el) { 
+        if($(el).hasClass('cur-route')){ currentPageNumber = idx; }
+      });
 
       var possible = (direction == 'next') ? $currentWork.next('li').length : $currentWork.prev('li').length;
-      var newPos = (direction == 'next') ? (curPos - delta) : (curPos + delta);
-
+      var newPos = (direction == 'next') ? ((currentPageNumber+1)*delta) : ((currentPageNumber-1)*delta);
+console.log(possible);
+console.log(newPos);
       if(possible) {
 
-        $slider.animate({'marginLeft': newPos +'px'} , {
+        $slider.animate({'left': newPos +'px'} , {
           duration: 1000,
-          easing: 'easeInCubic',
           complete: function() {
             if(direction === 'next') {
               $currentWork.removeClass('cur-route').next('li').addClass('cur-route');
@@ -193,7 +218,12 @@ var WTFIMB = {};
               $currentWork.removeClass('cur-route').prev('li').addClass('cur-route');
               $currentPage.removeClass('cur-page').prev('li').addClass('cur-page');
             }
+            sliding = false;
           }
+        });
+      } else {
+        $slider.animate({'left': currentPageNumber*delta +'px'} , {
+          duration: 800
         });
       }
     };
@@ -265,4 +295,5 @@ $(function() {
   $('#fword').text(fword);
   // Start app
   WTFIMB.app().init();
+
 });
