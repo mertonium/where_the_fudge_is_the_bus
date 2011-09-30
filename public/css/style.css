@@ -240,6 +240,7 @@ ul#pages {
   bottom: 0;
   list-style: none;
   margin: 0 auto;
+  background-color: #000;
 }
 #pages li {
   width: 20px;
@@ -252,6 +253,11 @@ ul#pages {
   #container {
      width: 320px;
      overflow: hidden;
+  }
+  
+  #pages {
+     width: 320px;
+     margin: 0 auto;
   }
 
   #the_loader {
@@ -306,6 +312,10 @@ ul#pages {
      width: 600px;
      overflow: hidden;
      margin: 1em auto;
+   }
+   #pages {
+     width: 600px;
+     margin: 0 auto;
    }
 
   #the_loader {
