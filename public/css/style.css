@@ -77,7 +77,7 @@ pre, code, kbd, samp { font-family: monospace, sans-serif; }
  */
 
 /* Prevent mobile zooming while remain desktop zooming: github.com/shichuan/mobile-html5-boilerplate/issues/closed#issue/14 */
-html { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; } 
+html { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
 
 /* Accessible focus treatment: people.opera.com/patrickl/experiments/keyboard/test */
 a:hover, a:active { outline: none; }
@@ -163,10 +163,10 @@ a, a:active, a:visited { color: #607890; }
 a:hover { color: #036; }
 
 
-/* 
- * Helper classes 
+/*
+ * Helper classes
  */
- 
+
 /* prevent callout */
 .nocallout {-webkit-touch-callout: none;}
 
@@ -208,7 +208,7 @@ textarea.contenteditable {-webkit-appearance: none;}
 .clearfix { zoom: 1; }
 
 
-/* Primary Styles for mobile
+/* Primary Global Styles
    Author: John Mertens (http://mertonium.com)
 */
 body {
@@ -216,42 +216,6 @@ body {
   color: #FFFFFF;
 }
 
-#container {
-  width: 320px;
-  overflow: hidden;
-}
-
-#the_loader {
-  width: 320px;
-  text-align: center;
-}
-#the_loader img {
- width: 50px;
- height: 50px;
-}
- 
-h1, .response {
-  font-size: 2.6em;
-  text-transform: uppercase;
-  font-weight: bold;
-}
-
-.out-of-range {
-  font-size: 2.3em;
-  text-transform: uppercase;
-  font-weight: bold;
-  text-align: left;
-}
-
-h1 {
-  border-bottom: 1px groove;
-}
-
-.details {
-  font-size: 1em;
-  font-style: italic;
-  color: #dddddd;
-}
 #the_routes {
   list-style: none;
   padding: 0;
@@ -259,15 +223,74 @@ h1 {
   width: 15000px;
 }
 
-#the_routes li {
-  margin-bottom: 1.5em;
-  float: left;
-  width: 320px;
-}
-
 #debug_info {
   clear:both;
   display: none;
+}
+
+h1 {
+  border-bottom: 1px groove;
+}
+
+footer {
+  clear:both;
+}
+ul#pages {
+  position: fixed;
+  bottom: 0;
+  list-style: none;
+  margin: 0 auto;
+}
+#pages li {
+  width: 20px;
+  float: left;
+}
+#pages li:before { content: '□'; }
+#pages li.cur-page:before { content: '■'; }
+
+@media only screen and (max-device-width: 480px) {
+  #container {
+     width: 320px;
+     overflow: hidden;
+  }
+
+  #the_loader {
+    width: 50px;
+    margin: 1em auto;
+  }
+  #the_loader img {
+    width: 50px;
+    height: 50px;
+  }
+
+   h1, .response {
+     font-size: 2.6em;
+     text-transform: uppercase;
+     font-weight: bold;
+   }
+
+   .out-of-range {
+     font-size: 2.3em;
+     text-transform: uppercase;
+     font-weight: bold;
+     text-align: left;
+   }
+
+   .details {
+     font-size: 1em;
+     font-style: italic;
+     color: #dddddd;
+   }
+
+   #the_routes li {
+     margin-bottom: 1.5em;
+     float: left;
+     width: 320px;
+   }
+
+   #pages li {
+     font-size: 1.8em;
+   }
 }
 
 /*
@@ -279,7 +302,49 @@ h1 {
 
 /*styles for 800px and up!*/
 @media only screen and (min-width: 800px) {
-  /* Styles */
+  #container {
+     width: 600px;
+     overflow: hidden;
+     margin: 1em auto;
+   }
+
+  #the_loader {
+    width: 100px;
+    margin: 1em auto;
+  }
+  #the_loader img {
+    width: 100px;
+    height: 100px;
+  }
+
+   h1, .response {
+     font-size: 3.6em;
+     text-transform: uppercase;
+     font-weight: bold;
+   }
+
+   .out-of-range {
+     font-size: 3.3em;
+     text-transform: uppercase;
+     font-weight: bold;
+     text-align: left;
+   }
+
+   .details {
+     font-size: 1.8em;
+     font-style: italic;
+     color: #dddddd;
+   }
+
+   #the_routes li {
+     margin-bottom: 1.5em;
+     float: left;
+     width: 600px;
+   }
+
+   #pages li {
+     font-size: 3em;
+   }
 }/*/mediaquery*/
 
 
