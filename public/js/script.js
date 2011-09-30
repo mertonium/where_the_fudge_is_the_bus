@@ -60,6 +60,7 @@ var WTFIMB = {};
               // Get the realtime info for each stop
               $.get(url,{}, function(data) {
                 $stopBlock = $('#the_routes');
+                $pageBlock = $('#pages');
                 var j = 0,
                     connector = '',
                     advice = '',
@@ -73,7 +74,7 @@ var WTFIMB = {};
                 var routes = data.routes;
                 console.log(data);
 
-                // Loop through each arrival, building the
+                // Loop through each arrival, building the html
                 for(; j < routes.length; j += 1) {
                   currentTime = data.current_time;
                   route = routes[j];
@@ -89,22 +90,24 @@ var WTFIMB = {};
                     minutesFromNow = (realtime) ? parseInt(route.next_arrival, 10) : calcTimeDifference(route.next_arrival, currentTime);
                     //console.log(minutesFromNow);
 
-                    if(minutesFromNow > 20) {
+                    if(minutesFromNow > 15) {
                       advice = humanTalk('fuckit');
-                    } else if(minutesFromNow < 5) {
+                    } else if(minutesFromNow < 3) {
                       advice = humanTalk('relax');
                     } else {
                       advice = humanTalk('meh');
                     }
                     $stopBlock.append('<li data-stop="'+s.stop_id+'" data-route="'+route.route_short_name+'"><div class="response">'+advice+', the next '+route.route_short_name+' is '+connector+' '+route.next_arrival+'</div><div class="details">(If you\'re looking for the '+route.route_long_name+' and you\'re at the '+s.stop_name+' stop.)</div></li>');
+                    $pageBlock.append('<li></li>');
                   }
                 }
 
                 finishedCount += 1;
 
-                if(finishedCount == (totalStops-1)) {
+                if(finishedCount === totalStops) {
                   $('#controls').show();
                   $('#the_routes').children().first().addClass('cur-route');
+                  $pageBlock.children().first().addClass('cur-page');
                 }
               });
             });
@@ -164,11 +167,13 @@ var WTFIMB = {};
         wipeRight: function(result) { $('#the_routes').trigger('swiperight'); }
       });
     };
-    
+
     var _swipehandler = function(ev) {
       var $slider = $(this);
+      var $pages = $('#pages');
       var direction = (ev.type == 'swipeleft') ? 'next' : 'prev';
       var $currentWork = $slider.find('.cur-route');
+      var $currentPage = $pages.find('.cur-page');
       var curPos = parseInt($slider.css('marginLeft'), 10);
       var delta = $('.cur-route').outerWidth(true);
 
@@ -176,15 +181,19 @@ var WTFIMB = {};
       var newPos = (direction == 'next') ? (curPos - delta) : (curPos + delta);
 
       if(possible) {
-        if(direction === 'next') {
-          $currentWork.removeClass('cur-route').next('li').addClass('cur-route');
-        } else {
-          $currentWork.removeClass('cur-route').prev('li').addClass('cur-route');
-        }
+
         $slider.animate({'marginLeft': newPos +'px'} , {
           duration: 1000,
           easing: 'easeInCubic',
-          complete: function() {    }
+          complete: function() {
+            if(direction === 'next') {
+              $currentWork.removeClass('cur-route').next('li').addClass('cur-route');
+              $currentPage.removeClass('cur-page').next('li').addClass('cur-page');
+            } else {
+              $currentWork.removeClass('cur-route').prev('li').addClass('cur-route');
+              $currentPage.removeClass('cur-page').prev('li').addClass('cur-page');
+            }
+          }
         });
       }
     };
@@ -255,5 +264,5 @@ $(function() {
   var fword = (location.host.indexOf('fuck') > -1) ? 'fuck' : WTFIMB.app().humanTalk('fbomb');
   $('#fword').text(fword);
   // Start app
-  WTFIMB.app().init(); 
+  WTFIMB.app().init();
 });
