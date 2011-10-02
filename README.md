@@ -1,16 +1,21 @@
 #Installation
-This application requires node.js to be installed.
+This application requires [node.js](http://nodejs.org/) to be installed.
 
-`clone the repo
-cd msp_transit
-npm install
-node server.js`
+Clone this repository.
 
-The server can be found at http://localhost:3000/.
+Rename `config.example.js` to `config.js` and update it with your my511 token.
 
-The *data* folder contains the node script for converting stops.txt files into GeoJSON files to be uploaded into a CouchDB.
+In your terminal, navigate to the `where_the_fudge_is_the_bus` folder and run:
 
-The *public* folder contains the public facing HTML5 website and all the client side javascript code.
+`npm install`
+
+`node server.js`
+
+The server will then be live at [http://localhost:3000](http://localhost:3000).
+
+The **data** folder contains the node script for converting stops.txt files into GeoJSON files to be uploaded to a CouchDB.
+
+The **public** folder contains the public facing HTML5 website and all the client side javascript code.
 
 **The License:**
 
