@@ -99,7 +99,7 @@ var WTFIMB = {};
 
                     if(minutesFromNow > 15) {
                       advice = humanTalk('fuckit');
-                    } else if(minutesFromNow < 6) {
+                    } else if(minutesFromNow < 10) {
                       advice = humanTalk('relax');
                     } else {
                       advice = humanTalk('meh');
@@ -256,11 +256,12 @@ var WTFIMB = {};
           'Brostradamus','Bro Biden','Brommander In Chief','Ayatollah Bromeini'
         ],
         relax : ['relax','chill out','chillax','mellow out','simmer down','tranquilo'],
-        meh : ['smoke \'em if you got \'em','you probably have time for a coffee','make a friend at the stop'],
+        meh : ['smoke \'em if you got \'em','you probably have time for a coffee',
+          'make a friend at the stop','hope you brought a book'],
         fuckit : ['might as well walk','hope you\'re not in a hurry',
-          'maybe you should take a cab','hope you brought a book'
+          'maybe you should take a cab'
         ],
-        fbomb : ['fudge','fart','fiddlesticks','freak','frig']
+        fbomb : ['fudge','fart','fiddlesticks','freak','frig','flip','frick']
       };
 
       return vocab[type][(Math.floor(Math.random() * ((vocab[type].length-1) + 1)))];
