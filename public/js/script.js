@@ -6,15 +6,21 @@ var WTFIMB = {};
 
 (function(m) {
   m.app = function() {
-    var ENV = 'prod';
-    var files_house = { coords: { latitude: 44.98680, longitude: -93.25217 }};
+    var queryString = location.search.replace('?','').split('=');
+    var ENV = (queryString.length === 2 && queryString[0] === 'demo') ? 'dev' : 'prod';
+    var DEMO_CITY = (queryString.length === 2 && queryString[0] === 'demo') ? queryString[1] : null;
+
+    // If we are running a demo, we need to have a point in each city that we can use
+    var sf_location = { coords: { latitude: 37.7928039, longitude: -122.417759 }};
+    var msp_location = { coords: { latitude: 44.98680, longitude: -93.25217 }};
+    
     var cur_pos = null;
     var couch = {
       host: 'http://x.iriscouch.com:5984',
       db:   'all_stops'
     };
     var sliding = false;
-    
+
     var init = function() {
       $('#the_loader').show();
       loadRoutes();
@@ -26,7 +32,7 @@ var WTFIMB = {};
       getPos(function(pos, error) {
         if(error) {
           console.error(error);
-          cur_pos = files_house;
+          cur_pos = (DEMO_CITY === 'sf') ? sf_location : msp_location;
         } else {
           //console.log(pos);
           cur_pos = pos;
@@ -168,7 +174,7 @@ var WTFIMB = {};
         wipeRight: function(result) { $('#the_routes').trigger('swiperight'); }
       });
       /*
-      $('#the_routes').draggable({ 
+      $('#the_routes').draggable({
         axis: "x",
         start: function(event, ui) {
           startPos = ui.position;
@@ -198,7 +204,7 @@ var WTFIMB = {};
       var curPos = parseInt($slider.css('left'), 10);
       var delta = $('.cur-route').outerWidth(true) * -1;
       var currentPageNumber = 0;
-      $slider.children().each(function(idx, el) { 
+      $slider.children().each(function(idx, el) {
         if($(el).hasClass('cur-route')){ currentPageNumber = idx; }
       });
 
