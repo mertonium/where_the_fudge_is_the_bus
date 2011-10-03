@@ -1,11 +1,11 @@
 {
-  "name":"msp-tranist",
+  "name":"where-the-fudge-is-the-bus",
   "version":"0.0.1",
   "description":"Serves a website that determines a users location and displays when the next bus is coming.",
   "keywords":["transit","twin cities","real","time","bus"],
-  "homepage":"http://mertonium.com",
+  "homepage":"http://mertonium.com/where-the-fudge-is-the-bus/",
   "author":"John Mertens <john@mertonium.com> (http://mertonium.com)",
-  "repository":{ "type" : "git", "url" : "http://github.com/mertonium/msp_transit.git" },
+  "repository":{ "type" : "git", "url" : "http://github.com/mertonium/where_the_fudge_is_the_bus.git" },
   "dependencies": {
     "express":"2.3.4",
     "nextrip":"0.0.2",
