@@ -173,26 +173,6 @@ var WTFIMB = {};
         wipeLeft: function(result) { $('#the_routes').trigger('swipeleft'); },
         wipeRight: function(result) { $('#the_routes').trigger('swiperight'); }
       });
-      /*
-      $('#the_routes').draggable({
-        axis: "x",
-        start: function(event, ui) {
-          startPos = ui.position;
-        },
-        drag: function(event, ui) {
-          console.log(sliding);
-          var dx = ui.position.left - startPos.left;
-          if(Math.abs(dx) > 60 && !sliding) {
-            sliding = true;
-            if(dx > 0) {
-              $('#the_routes').trigger('swipeleft');
-            } else {
-              $('#the_routes').trigger('swiperight');
-            }
-          }
-        }
-      });
-      */
     };
 
     var _swipehandler = function(ev) {
@@ -210,8 +190,7 @@ var WTFIMB = {};
 
       var possible = (direction == 'next') ? $currentWork.next('li').length : $currentWork.prev('li').length;
       var newPos = (direction == 'next') ? ((currentPageNumber+1)*delta) : ((currentPageNumber-1)*delta);
-console.log(possible);
-console.log(newPos);
+
       if(possible) {
 
         $slider.animate({'left': newPos +'px'} , {
