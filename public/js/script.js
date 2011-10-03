@@ -261,7 +261,7 @@ var WTFIMB = {};
         fuckit : ['might as well walk','hope you\'re not in a hurry',
           'maybe you should take a cab'
         ],
-        fbomb : ['fudge','fart','fiddlesticks','freak','frig','flip','frick']
+        fbomb : ['fudge','fart','fiddlestick','freak','frig','flip','frick']
       };
 
       return vocab[type][(Math.floor(Math.random() * ((vocab[type].length-1) + 1)))];

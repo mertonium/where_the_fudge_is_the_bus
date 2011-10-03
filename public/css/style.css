@@ -214,6 +214,7 @@ textarea.contenteditable {-webkit-appearance: none;}
 body {
   background: #000000;
   color: #FFFFFF;
+  font-size: 100%;
 }
 
 #the_routes {
@@ -271,9 +272,13 @@ ul#pages {
   }
 
    h1, .response {
-     font-size: 2.6em;
+     font-size: 2.0em;
      text-transform: uppercase;
      font-weight: bold;
+   }
+   
+   .response {
+     font-size: 1.9em;
    }
 
    .out-of-range {
